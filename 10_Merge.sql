@@ -1,4 +1,4 @@
-
+    
 -- MERGE : 테이블 병합
 
 /*
@@ -99,6 +99,8 @@ WHEN NOT MATCHED THEN
 SELECT * FROM emps_it
 ORDER BY employee_id ASC;
 
+
+--1번 -----------------------------------------------------------
 CREATE TABLE depts AS(SELECT * FROM departments);
 SELECT * FROM depts;
 
@@ -121,14 +123,18 @@ INSERT INTO depts
     (department_id,department_name,manager_id,location_id)
     VALUES(320,'영업',303,1700);
     
+----------------------- 2번
+--2-1번
 UPDATE depts
 SET department_name = 'IT bank'
 WHERE department_name = 'IT Support';
 
+--2-2번
 UPDATE depts
 SET department_id = 301
 WHERE department_id = 290;
 
+--2-3번
 UPDATE depts
 SET department_name = 'IT Help'
 WHERE department_name = 'IT Helpdesk';
@@ -140,7 +146,7 @@ WHERE manager_id = 303;
 UPDATE depts
 SET department_id = 301
 WHERE department_id = 290;
-
+--2-4번
 UPDATE depts
 SET department_id = 301
 WHERE department_id = 300;
@@ -151,34 +157,51 @@ WHERE department_id = 310;
 
 UPDATE depts
 SET department_id = 301
-WHERE department_id = 320;
+WHERE department_id = 320; 
+-- 위에 내가 한것-- 밑 FM
+UPDATE depts
+SET
+    manager_id = 301
+WHERE  department_id = IN(290,300,310,320);
 
---------------------------------------------
-
+--------3번 ---------------------------
+--3-1번
 DELETE FROM depts
 WHERE department_name = '영업';
 
 SELECT * FROM depts;
-
+--3-2번
 DELETE FROM depts
 WHERE department_name = 'NOC';
 
-----------------------------------------
+----- FM--------
+DELETE FROM depts
+WHERE department_id IN(SELECT department_id FROM depts
+                    WHERE department_name = IN('영업', 'NOC'));
+                    
+-- 4번-------------------------------------------------------------
 
+--4-1번
 DELETE FROM depts
 WHERE department_id > 200;
-
+--4-2번
 UPDATE depts
 SET manager_id = 100
 WHERE department_id <= 110;
+-- 위 내가 한 것   밑 FM-------
+UPDATE depts
+SET manager_id = 100
+WHERE manager_id IS NOT NULL;
 
 SELECT * FROM depts;
 
+--4-3,4-4번
 MERGE INTO depts a
     USING
         (SELECT*FROM departments) b
      ON
-        (a.department_id = b.department_id)
+        (a.department_id = b.department_id) 
+        -- 이건 UPDATE에 들어가면 안된다. 고정된 조건 값이기 때문에.
 WHEN MATCHED THEN
     UPDATE SET
         a.department_name = b.department_name,
@@ -189,12 +212,16 @@ WHEN NOT MATCHED THEN
     INSERT VALUES
         (b.department_id, b.department_name,
         b.manager_id, b.location_id);
- ----------------5-1--------------------------       
+        
+ ----------------5번--------------------------    
+ 
+ --5-1번
 CREATE TABLE jobs_it AS(SELECT * FROM jobs
                         WHERE min_salary > 6000);
 
 SELECT * FROM jobs_it;
 
+ --5-2번
 INSERT INTO jobs_it
     (job_id,job_title,min_salary,max_salary)
 VALUES('IT_DEV','아이티개발팀',6000,20000);
@@ -205,6 +232,7 @@ INSERT INTO jobs_it
     (job_id,job_title,min_salary,max_salary)
 VALUES('SEC_DEV','보안개발팀',6000,19000);
 
+ -- 5-3,4번
 MERGE INTO jobs_it a
     USING
         (SELECT * FROM jobs WHERE min_salary > 5000) b
