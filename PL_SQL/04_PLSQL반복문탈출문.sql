@@ -71,6 +71,9 @@ BEGIN
     END LOOP;
 END;
 -- 위에 내가한 것 아래는 fm
+-- 1. 모든 구구단을 출력하는 익명 블록을 만드세요. (2 ~ 9단)
+-- 짝수단만 출력해 주세요. (2, 4, 6, 8)
+-- 참고로 오라클 연산자 중에는 나머지를 알아내는 연산자가 없어요. (% 없음~)
 BEGIN
 
     FOR dan IN 2..9   -- ..을 반복해 1~9까지 하나씩 밑에 루프를 반복한다.
@@ -107,7 +110,10 @@ CREATE SEQUENCE b_seq
     NOCACHE
     NOCYCLE;
     
-
+-- 2. INSERT를 300번 실행하는 익명 블록을 처리하세요.
+-- board라는 이름의 테이블을 만드세요. (bno, writer, title 컬럼이 존재합니다.)
+-- bno는 SEQUENCE로 올려 주시고, writer와 title에 번호를 붙여서 INSERT 진행해 주세요.
+-- ex) 1, test1, title1 -> 2 test2 title2 -> 3 test3 title3 ....
 DECLARE
     v_num NUMBER := 1;
 BEGIN
