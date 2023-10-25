@@ -1,20 +1,15 @@
 
-CREATE TABLE score (
-    stu_num NUMBER(4) PRIMARY KEY,
-    stu_name VARCHAR(30) NOT NULL,
-    kor NUMBER(3) NOT NULL,
-    eng NUMBER(3) NOT NULL,
-    math NUMBER(3) NOT NULL,
-    total NUMBER(3) DEFAULT 0,
-    average NUMBER(5, 2),
-    grade VARCHAR2(5)
+CREATE TABLE users(
+    user_id VARCHAR2(50) PRIMARY KEY,
+    user_pw VARCHAR2(50) NOT NULL,
+    user_name VARCHAR2(50) NOT NULL,
+    user_phone1 VARCHAR2(50),
+    user_phone2 VARCHAR2(50),
+    user_email1 VARCHAR2(50),
+    user_email2 VARCHAR2(50),
+    addr_basic VARCHAR2(300),
+    addr_detail VARCHAR2(300),
+    addr_zip_num VARCHAR2(50),
+    reg_date DATE DEFAULT sysdate
 );
-
-CREATE SEQUENCE score_seq
-    START WITH 1
-    INCREMENT BY 1
-    MAXVALUE 1000
-    NOCYCLE
-    NOCACHE;
-    
-SELECT * FROM score;
+SELECT * FROM users;
